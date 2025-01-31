@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  bookcow-db:
+    image: postgres:13.8
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: bookcow-db
+    ports:
+      - '9432:5432'
