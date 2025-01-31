@@ -1,6 +1,22 @@
 version: '3.8'
 
 services:
+  backend:
+    build: .
+    networks:
+      - backend
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - '8080:8080'
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+
   bookcow-db:
     image: postgres:13.8
     environment:
@@ -9,3 +25,12 @@ services:
       POSTGRES_DB: bookcow-db
     ports:
       - '9432:5432'
+    healthcheck:
+      test: pg_isready -U ${DB_USER:-admin} -d image_storage
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+networks:
+  backend:
+
