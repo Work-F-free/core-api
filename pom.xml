@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>tat.start</groupId>
-	<artifactId>bookcow</artifactId>
+	<artifactId>work.for.free</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>bookcow</name>
+	<name>work4free</name>
 	<description>Workspaces booking service api</description>
 	<url/>
 	<licenses>
@@ -60,6 +60,10 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
 		</dependency>
 	</dependencies>
 

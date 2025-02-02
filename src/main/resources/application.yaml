@@ -10,3 +10,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  security:
+    oauth2:
+      client:
+        provider:
+          baeldung-keycloak:
+            issuer-uri: http://localhost:8080/realms/baeldung-keycloak
