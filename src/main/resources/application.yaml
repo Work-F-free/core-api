@@ -1,5 +1,5 @@
 application:
-  name: bookcow
+  name: Work4Free API
 
 spring:
   datasource:
@@ -12,7 +12,19 @@ spring:
       ddl-auto: update
   security:
     oauth2:
-      client:
-        provider:
-          baeldung-keycloak:
-            issuer-uri: http://localhost:8080/realms/baeldung-keycloak
+      resourceserver:
+        jwt:
+          issuer-uri: ${keycloak.uri}/realms/${keycloak.realm}
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+keycloak:
+  uri: http://localhost:7080
+  realm: dev
+
+springdoc:
+  api-docs:
+    enabled: true
+
+logging:
+  level:
+    root: DEBUG
