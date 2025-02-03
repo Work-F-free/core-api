@@ -1,5 +1,6 @@
 package tat.start.work.four.free.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,12 +11,16 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "coworking")
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Coworking {
 
     @Id
@@ -32,8 +37,8 @@ public class Coworking {
     @Column(name = "owner_id", nullable = false, updatable = false)
     private String owner;
 
-    @OneToMany(mappedBy = "coworking")
-    private List<Seat> seats;
+    @OneToMany(mappedBy = "coworking", cascade = {CascadeType.ALL})
+    private List<Seat> seats = new ArrayList<>();
 
     @Column(name = "description")
     private String description;
@@ -51,6 +56,9 @@ public class Coworking {
         this.address = address;
         this.owner = owner;
         this.seats = seats;
+        if (!CollectionUtils.isEmpty(seats)) {
+            seats.forEach(s -> s.setCoworking(this));
+        }
         this.description = description;
         this.longitude = longitude;
         this.latitude = latitude;

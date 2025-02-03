@@ -2,6 +2,7 @@ package tat.start.work.four.free.controller;
 
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -51,7 +52,7 @@ public class CoworkingController {
 
     @GetMapping
     public ResponseEntity<Page<SearchCoworkingResponse>> searchCoworkings(
-            SearchCoworkingRequest request,
+            @ParameterObject SearchCoworkingRequest request,
             @PageableDefault(sort = "name", direction = Sort.Direction.DESC)
             @Nullable
             Pageable pageable

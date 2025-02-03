@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.util.List;
@@ -29,6 +30,7 @@ public class Seat {
 
     @ManyToOne
     @JoinColumn(name = "coworking_id", nullable = false, updatable = false)
+    @Setter
     private Coworking coworking;
 
     @Column(name = "number")

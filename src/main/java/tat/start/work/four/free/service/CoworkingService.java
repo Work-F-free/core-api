@@ -5,12 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tat.start.work.four.free.dto.CreateCoworkingRequest;
 import tat.start.work.four.free.dto.SearchCoworkingRequest;
 import tat.start.work.four.free.entity.Coworking;
 import tat.start.work.four.free.entity.Booking;
 import tat.start.work.four.free.entity.Seat;
 import tat.start.work.four.free.repository.CoworkingRepository;
+import tat.start.work.four.free.repository.SeatRepository;
 import tat.start.work.four.free.repository.util.CoworkingSpecification;
 
 import java.time.Instant;
@@ -22,11 +24,13 @@ import java.util.Objects;
 public class CoworkingService {
 
     private final CoworkingRepository coworkingRepository;
+    private final SeatRepository seatRepository;
 
     public Coworking getById(Long id) {
         return coworkingRepository.findById(id).orElseThrow();
     }
 
+    @Transactional
     public void bookSeat(Long coworkingId, Integer seatNumber, Long aLong) {
         var coworking = getById(coworkingId);
         var seat = coworking.getSeats().stream().filter(s -> Objects.equals(s.getNumber(), seatNumber))
@@ -34,6 +38,7 @@ public class CoworkingService {
 
     }
 
+    @Transactional
     public Coworking create(CreateCoworkingRequest request) {
         var seats = request.seats().stream().map(r -> new Seat(r.seatNumber(), r.capacity(), null, r.description()))
                 .toList();
@@ -49,6 +54,7 @@ public class CoworkingService {
         return coworkingRepository.findAll(specification, pageable);
     }
 
+    @Transactional
     public Coworking update(Coworking coworking) {
         return coworkingRepository.save(coworking);
     }

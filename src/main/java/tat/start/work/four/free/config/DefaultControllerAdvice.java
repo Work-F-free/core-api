@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import tat.start.work.four.free.controller.AuthController;
 
 @ControllerAdvice
 public class DefaultControllerAdvice {
@@ -16,8 +15,11 @@ public class DefaultControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(AuthController.HttpUnauthorizedException.class)
+    @ExceptionHandler(HttpUnauthorizedException.class)
     public void handleUnauthorized() {
         // Nothing to do
+    }
+
+    private static class HttpUnauthorizedException extends RuntimeException {
     }
 }
