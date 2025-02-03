@@ -38,7 +38,7 @@ public class CoworkingController {
     public ResponseEntity<CoworkingResponse> getCoworking(@PathVariable Long id) {
         var coworking = coworkingService.getById(id);
         return ResponseEntity.ok(new CoworkingResponse(coworking.getId(), coworking.getName(), coworking.getAddress(),
-                coworking.getOwner().getId(), coworking.getSeats(), coworking.getDescription()));
+                coworking.getOwner(), coworking.getSeats(), coworking.getDescription()));
     }
 
     @GetMapping("/{id}/seat/{seatNum}/booking")
@@ -57,7 +57,7 @@ public class CoworkingController {
             Pageable pageable
     ) {
         var res = coworkingService.search(request, pageable).map(r -> new SearchCoworkingResponse(r.getId(),
-                r.getName(), r.getAddress(), r.getOwner().getId(), r.getDescription()));
+                r.getName(), r.getAddress(), r.getOwner(), r.getDescription()));
         return ResponseEntity.ok(res);
     }
 
@@ -67,7 +67,7 @@ public class CoworkingController {
         var seats = coworking.getSeats().stream().map(s -> new CreateCoworkingResponse.CreateSeatResponse(s.getId(),
                 s.getNumber(), s.getCapacity(), s.getDescription())).toList();
         return ResponseEntity.ok(new CreateCoworkingResponse(coworking.getId(), coworking.getAddress(),
-                coworking.getName(), coworking.getDescription(), coworking.getOwner().getId(), seats));
+                coworking.getName(), coworking.getDescription(), coworking.getOwner(), seats));
     }
 
     @PutMapping("/{id}")

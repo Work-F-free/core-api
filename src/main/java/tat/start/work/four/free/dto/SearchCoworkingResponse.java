@@ -4,7 +4,7 @@ public record SearchCoworkingResponse(
     Long id,
     String name,
     String address,
-    Long owner,
+    String owner,
     String description
 ) {
 }

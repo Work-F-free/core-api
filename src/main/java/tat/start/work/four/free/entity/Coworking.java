@@ -29,9 +29,8 @@ public class Coworking {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false, updatable = false)
-    private Owner owner;
+    @Column(name = "owner_id", nullable = false, updatable = false)
+    private String owner;
 
     @OneToMany(mappedBy = "coworking")
     private List<Seat> seats;
@@ -45,7 +44,7 @@ public class Coworking {
     @Column(name = "latitude")
     private Float latitude;
 
-    public Coworking(String name, String address, Owner owner, List<Seat> seats, String description, Float longitude,
+    public Coworking(String name, String address, String owner, List<Seat> seats, String description, Float longitude,
                      Float latitude) {
         this.id = null;
         this.name = name;

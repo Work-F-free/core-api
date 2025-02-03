@@ -8,7 +8,7 @@ public record CoworkingResponse(
         Long id,
         String name,
         String address,
-        Long owner,
+        String owner,
         List<Seat>seats,
         String description
 ) {

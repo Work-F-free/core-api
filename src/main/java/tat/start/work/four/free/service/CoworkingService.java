@@ -22,7 +22,6 @@ import java.util.Objects;
 public class CoworkingService {
 
     private final CoworkingRepository coworkingRepository;
-    private final UserService userService;
 
     public Coworking getById(Long id) {
         return coworkingRepository.findById(id).orElseThrow();
@@ -36,10 +35,9 @@ public class CoworkingService {
     }
 
     public Coworking create(CreateCoworkingRequest request) {
-        var owner = userService.getUserById(request.owner());
         var seats = request.seats().stream().map(r -> new Seat(r.seatNumber(), r.capacity(), null, r.description()))
                 .toList();
-        var coworking = new Coworking(request.name(), request.address(), owner, seats, request.description(),
+        var coworking = new Coworking(request.name(), request.address(), request.owner(), seats, request.description(),
                 request.xCoordinate(), request.yCoordinate());
         return coworkingRepository.save(coworking);
     }

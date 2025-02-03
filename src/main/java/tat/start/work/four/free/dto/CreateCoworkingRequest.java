@@ -6,7 +6,7 @@ public record CreateCoworkingRequest(
     String address,
     String name,
     String description,
-    Long owner,
+    String owner,
     List<CreateSeatRequest> seats,
     Float xCoordinate,
     Float yCoordinate

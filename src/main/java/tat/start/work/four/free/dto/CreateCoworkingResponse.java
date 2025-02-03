@@ -7,7 +7,7 @@ public record CreateCoworkingResponse(
     String address,
     String name,
     String description,
-    Long owner,
+    String owner,
     List<CreateSeatResponse> seats
 ) {
 
