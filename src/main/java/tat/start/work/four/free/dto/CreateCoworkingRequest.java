@@ -8,8 +8,8 @@ public record CreateCoworkingRequest(
     String description,
     String owner,
     List<CreateSeatRequest> seats,
-    Float xCoordinate,
-    Float yCoordinate
+    Float longitude,
+    Float latitude
 ) {
 
     public record CreateSeatRequest(

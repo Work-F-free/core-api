@@ -43,7 +43,7 @@ public class CoworkingService {
         var seats = request.seats().stream().map(r -> new Seat(r.seatNumber(), r.capacity(), null, r.description()))
                 .toList();
         var coworking = new Coworking(request.name(), request.address(), request.owner(), seats, request.description(),
-                request.xCoordinate(), request.yCoordinate());
+                request.longitude(), request.latitude());
         return coworkingRepository.save(coworking);
     }
 
