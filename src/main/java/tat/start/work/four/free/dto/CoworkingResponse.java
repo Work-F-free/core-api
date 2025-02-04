@@ -9,7 +9,7 @@ public record CoworkingResponse(
         String name,
         String address,
         String owner,
-        List<Seat>seats,
+        List<SeatResponse>seats,
         String description
 ) {
 }

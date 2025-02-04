@@ -15,7 +15,6 @@ public class Booking {
 
     private Instant fromDatetime;
     private Instant toDatetime;
-    private String bookedByName;
     private String bookedByPhone;
     private boolean expired;
 }

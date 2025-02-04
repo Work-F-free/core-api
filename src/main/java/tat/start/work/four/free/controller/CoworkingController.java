@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tat.start.work.four.free.dto.BookingResponse;
 import tat.start.work.four.free.dto.CoworkingResponse;
@@ -23,9 +22,10 @@ import tat.start.work.four.free.dto.CreateCoworkingRequest;
 import tat.start.work.four.free.dto.CreateCoworkingResponse;
 import tat.start.work.four.free.dto.SearchCoworkingRequest;
 import tat.start.work.four.free.dto.SearchCoworkingResponse;
+import tat.start.work.four.free.dto.SeatResponse;
+import tat.start.work.four.free.entity.Booking;
 import tat.start.work.four.free.service.CoworkingService;
 
-import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -38,16 +38,14 @@ public class CoworkingController {
     @GetMapping("/{id}")
     public ResponseEntity<CoworkingResponse> getCoworking(@PathVariable Long id) {
         var coworking = coworkingService.getById(id);
+        var seats = coworking.getSeats().stream().map(s -> {
+            var bookings = s.getBookings().stream().map(b -> new BookingResponse(b.getFromDatetime(), b.getToDatetime()))
+                    .toList();
+            return new SeatResponse(s.getId(), s.getNumber(), s.getCapacity(),
+                    s.getDescription(), bookings);
+        }).toList();
         return ResponseEntity.ok(new CoworkingResponse(coworking.getId(), coworking.getName(), coworking.getAddress(),
-                coworking.getOwner(), coworking.getSeats(), coworking.getDescription()));
-    }
-
-    @GetMapping("/{id}/seat/{seatNum}/booking")
-    public ResponseEntity<List<BookingResponse>> getSeatBooking(@PathVariable Long id, @PathVariable Integer seatNum,
-                                                                @RequestParam Instant from, @RequestParam Instant to) {
-        var bookings = coworkingService.getSeatSchedule(id, seatNum, from, to).stream().map(b -> new BookingResponse(
-                b.getFromDatetime(), b.getToDatetime())).toList();
-        return ResponseEntity.ok(bookings);
+                coworking.getOwner(), seats, coworking.getDescription()));
     }
 
     @GetMapping

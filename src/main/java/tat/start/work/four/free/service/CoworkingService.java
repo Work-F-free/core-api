@@ -24,18 +24,9 @@ import java.util.Objects;
 public class CoworkingService {
 
     private final CoworkingRepository coworkingRepository;
-    private final SeatRepository seatRepository;
 
     public Coworking getById(Long id) {
         return coworkingRepository.findById(id).orElseThrow();
-    }
-
-    @Transactional
-    public void bookSeat(Long coworkingId, Integer seatNumber, Long aLong) {
-        var coworking = getById(coworkingId);
-        var seat = coworking.getSeats().stream().filter(s -> Objects.equals(s.getNumber(), seatNumber))
-                .findFirst().orElseThrow();
-
     }
 
     @Transactional
@@ -57,14 +48,5 @@ public class CoworkingService {
     @Transactional
     public Coworking update(Coworking coworking) {
         return coworkingRepository.save(coworking);
-    }
-
-    public List<Booking> getSeatSchedule(Long coworkingId, Integer seatNum, Instant from, Instant to) {
-        var seat = this.getById(coworkingId).getSeats().stream()
-                .filter(s -> Objects.equals(s.getNumber(), seatNum)).findFirst().orElseThrow();
-        var schedule = seat.getBookings().stream()
-                .filter(s -> s.getFromDatetime().isAfter(from) && s.getToDatetime().isBefore(to)).toList();
-        return schedule;
-
     }
 }
