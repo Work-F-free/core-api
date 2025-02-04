@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import tat.start.work.four.free.dto.BookingResponse;
 import tat.start.work.four.free.dto.CreateBookingRequest;
 import tat.start.work.four.free.dto.SeatResponse;
-import tat.start.work.four.free.entity.Booking;
 import tat.start.work.four.free.service.SeatService;
 
 import java.time.Instant;

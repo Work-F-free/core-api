@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import tat.start.work.four.free.entity.Coworking;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 public interface CoworkingRepository extends JpaRepository<Coworking, UUID> {

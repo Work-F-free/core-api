@@ -24,10 +24,8 @@ import tat.start.work.four.free.dto.SearchCoworkingRequest;
 import tat.start.work.four.free.dto.SearchCoworkingResponse;
 import tat.start.work.four.free.dto.SeatResponse;
 import tat.start.work.four.free.dto.UpdateCoworkingRequest;
-import tat.start.work.four.free.entity.Booking;
 import tat.start.work.four.free.service.CoworkingService;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController

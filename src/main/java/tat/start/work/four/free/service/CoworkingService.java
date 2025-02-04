@@ -3,7 +3,6 @@ package tat.start.work.four.free.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tat.start.work.four.free.dto.CreateCoworkingRequest;
@@ -11,20 +10,11 @@ import tat.start.work.four.free.dto.SearchCoworkingRequest;
 import tat.start.work.four.free.dto.SearchCoworkingResponse;
 import tat.start.work.four.free.dto.UpdateCoworkingRequest;
 import tat.start.work.four.free.entity.Coworking;
-import tat.start.work.four.free.entity.Booking;
 import tat.start.work.four.free.entity.Seat;
 import tat.start.work.four.free.repository.CoworkingRepository;
-import tat.start.work.four.free.repository.SeatRepository;
-import tat.start.work.four.free.repository.util.CoworkingSpecification;
-import tat.start.work.four.free.repository.util.SeatProjection;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.summingInt;
 
 @Service
 @RequiredArgsConstructor
