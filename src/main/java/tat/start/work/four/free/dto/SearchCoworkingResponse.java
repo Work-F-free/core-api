@@ -1,7 +1,9 @@
 package tat.start.work.four.free.dto;
 
+import java.util.UUID;
+
 public record SearchCoworkingResponse(
-    Long id,
+    UUID id,
     String name,
     String address,
     String owner,

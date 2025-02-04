@@ -1,11 +1,10 @@
 package tat.start.work.four.free.dto;
 
-import tat.start.work.four.free.entity.Seat;
-
 import java.util.List;
+import java.util.UUID;
 
 public record CoworkingResponse(
-        Long id,
+        UUID id,
         String name,
         String address,
         String owner,

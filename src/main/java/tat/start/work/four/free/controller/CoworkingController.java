@@ -23,10 +23,12 @@ import tat.start.work.four.free.dto.CreateCoworkingResponse;
 import tat.start.work.four.free.dto.SearchCoworkingRequest;
 import tat.start.work.four.free.dto.SearchCoworkingResponse;
 import tat.start.work.four.free.dto.SeatResponse;
+import tat.start.work.four.free.dto.UpdateCoworkingRequest;
 import tat.start.work.four.free.entity.Booking;
 import tat.start.work.four.free.service.CoworkingService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/coworking")
@@ -36,12 +38,12 @@ public class CoworkingController {
     private final CoworkingService coworkingService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<CoworkingResponse> getCoworking(@PathVariable Long id) {
+    public ResponseEntity<CoworkingResponse> getCoworking(@PathVariable UUID id) {
         var coworking = coworkingService.getById(id);
         var seats = coworking.getSeats().stream().map(s -> {
             var bookings = s.getBookings().stream().map(b -> new BookingResponse(b.getFromDatetime(), b.getToDatetime()))
                     .toList();
-            return new SeatResponse(s.getId(), s.getNumber(), s.getCapacity(),
+            return new SeatResponse(s.getId(), s.getType(), s.getNumber(), s.getCapacity(), s.getPrice(),
                     s.getDescription(), bookings);
         }).toList();
         return ResponseEntity.ok(new CoworkingResponse(coworking.getId(), coworking.getName(), coworking.getAddress(),
@@ -64,14 +66,15 @@ public class CoworkingController {
     public ResponseEntity<CreateCoworkingResponse> createCoworking(@RequestBody CreateCoworkingRequest request) {
         var coworking = coworkingService.create(request);
         var seats = coworking.getSeats().stream().map(s -> new CreateCoworkingResponse.CreateSeatResponse(s.getId(),
-                s.getNumber(), s.getCapacity(), s.getDescription())).toList();
+                s.getType(), s.getNumber(), s.getCapacity(), s.getPrice(), s.getDescription())).toList();
         return ResponseEntity.ok(new CreateCoworkingResponse(coworking.getId(), coworking.getAddress(),
-                coworking.getName(), coworking.getDescription(), coworking.getOwner(), seats));
+                coworking.getName(), coworking.getDescription(), coworking.getOwner(), seats,
+                coworking.getLongitude(), coworking.getLatitude()));
     }
 
     @PutMapping("/{id}")
-    public void updateCoworking(@PathVariable Long id) {
-        throw new UnsupportedOperationException("Unimplemented yet");
+    public void updateCoworking(@PathVariable UUID id, @RequestBody UpdateCoworkingRequest request) {
+        var coworking = coworkingService.update(id, request);
     }
 
     @DeleteMapping

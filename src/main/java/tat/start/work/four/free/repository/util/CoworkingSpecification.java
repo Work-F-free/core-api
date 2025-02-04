@@ -8,11 +8,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.query.EscapeCharacter;
 import tat.start.work.four.free.entity.Coworking;
 
+import java.util.UUID;
+
 @UtilityClass
 public class CoworkingSpecification {
 
     @Nonnull
-    public static Specification<Coworking> byIdIgnoreNull(@Nullable Integer id) {
+    public static Specification<Coworking> byIdIgnoreNull(@Nullable UUID id) {
         return (root, query, criteriaBuilder) -> {
             if (id == null) {
                 return null;

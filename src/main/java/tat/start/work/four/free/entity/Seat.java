@@ -4,6 +4,8 @@ import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +18,7 @@ import lombok.Setter;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @Entity(name = "seat")
 @Getter
@@ -24,20 +27,27 @@ import java.util.List;
 public class Seat {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
-    private Long id;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "coworking_id", nullable = false, updatable = false)
     @Setter
     private Coworking coworking;
 
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private SeatType type;
+
     @Column(name = "number")
     private Integer number;
 
     @Column(name = "capacity")
     private Integer capacity;
+
+    @Column(name = "price")
+    private Float price;
 
     @ElementCollection
     @CollectionTable(name = "booking", joinColumns = {@JoinColumn(name = "id")})
@@ -46,10 +56,13 @@ public class Seat {
     @Column(name = "description")
     private String description;
 
-    public Seat(Integer number, Integer capacity, List<Booking> bookings, String description) {
+    public Seat(SeatType type, Integer seatNumber, Integer capacity, Float price, List<Booking> bookings,
+                String description) {
         this.id = null;
-        this.number = number;
+        this.type = type;
+        this.number = seatNumber;
         this.capacity = capacity;
+        this.price = price;
         this.bookings = bookings;
         this.description = description;
     }
@@ -67,8 +80,12 @@ public class Seat {
     }
 
 
-    public void book(String phoneNumber, Instant fromDatetime, Instant toDatetime) {
-
+    public Seat book(String phoneNumber, Instant fromDatetime, Instant toDatetime) {
+        if (!this.isBooked(fromDatetime, toDatetime)) {
+            this.getBookings().add(new Booking(fromDatetime, toDatetime, phoneNumber, false));
+            return this;
+        }
+        throw new RuntimeException("Seat is already booked");
     }
 }
 

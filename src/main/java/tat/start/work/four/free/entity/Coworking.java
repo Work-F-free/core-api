@@ -16,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity(name = "coworking")
 @Getter
@@ -24,9 +25,9 @@ import java.util.List;
 public class Coworking {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
-    private Long id;
+    private UUID id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -62,5 +63,20 @@ public class Coworking {
         this.description = description;
         this.longitude = longitude;
         this.latitude = latitude;
+    }
+
+    public Coworking update(String name, String address, String owner, String description, Float longitude,
+                            Float latitude) {
+        this.name = name;
+        this.address = address;
+        this.owner = owner;
+        if (!CollectionUtils.isEmpty(seats)) {
+            seats.forEach(s -> s.setCoworking(this));
+        }
+        this.description = description;
+        this.longitude = longitude;
+        this.latitude = latitude;
+
+        return this;
     }
 }
