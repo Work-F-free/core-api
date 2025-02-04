@@ -53,9 +53,7 @@ public class CoworkingController {
     @GetMapping
     public ResponseEntity<Page<SearchCoworkingResponse>> searchCoworkings(
             @ParameterObject SearchCoworkingRequest request,
-            @PageableDefault(sort = "name", direction = Sort.Direction.DESC)
-            @Nullable
-            Pageable pageable
+            @ParameterObject @PageableDefault(sort = "name", direction = Sort.Direction.DESC) @Nullable Pageable pageable
     ) {
         var res = coworkingService.search(request, pageable).map(r -> new SearchCoworkingResponse(r.getId(),
                 r.getName(), r.getAddress(), r.getOwner(), r.getDescription()));
