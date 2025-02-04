@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tat.start.work.four.free.dto.CreateCoworkingRequest;
 import tat.start.work.four.free.dto.SearchCoworkingRequest;
+import tat.start.work.four.free.dto.SearchCoworkingResponse;
 import tat.start.work.four.free.dto.UpdateCoworkingRequest;
 import tat.start.work.four.free.entity.Coworking;
 import tat.start.work.four.free.entity.Booking;
@@ -23,6 +24,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.summingInt;
+
 @Service
 @RequiredArgsConstructor
 public class CoworkingService {
@@ -37,17 +40,18 @@ public class CoworkingService {
     @Transactional
     public Coworking create(CreateCoworkingRequest request) {
         var seats = request.seats().stream().map(r -> new Seat(r.type(), r.seatNumber(), r.capacity(), r.price(),
-                        null, r.description()))
-                .toList();
+                        null, r.description())).toList();
         var coworking = new Coworking(request.name(), request.address(), request.owner(), seats, request.description(),
                 request.longitude(), request.latitude());
         return coworkingRepository.save(coworking);
     }
 
-    public Page<Coworking> search(SearchCoworkingRequest request, Pageable pageable) {
+    public Page<SearchCoworkingResponse> search(SearchCoworkingRequest request, Pageable pageable) {
         var seatProjections = seatService.search(request);
-        var coworkingIds = seatProjections.stream().map(s -> s.getCoworking().getId()).collect(Collectors.toSet());
-        return coworkingRepository.findAllByIdIn(coworkingIds, pageable);
+        var coworkingIds = seatProjections.stream().collect(Collectors.groupingBy(s -> s.getCoworking().getId(), Collectors.counting()));
+        var coworkingsPage =  coworkingRepository.findAllByIdIn(coworkingIds.keySet(), pageable);
+        return coworkingsPage.map(r -> new SearchCoworkingResponse(r.getId(),
+                r.getName(), r.getAddress(), r.getOwner(), r.getDescription(), coworkingIds.get(r.getId())));
     }
 
     @Transactional
