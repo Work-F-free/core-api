@@ -18,8 +18,10 @@ public class SecurityConfiguration {
         http
                 .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().authenticated());
+                        .anyRequest().permitAll());
+//                        .authenticated());
 
         http.oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()));
 
