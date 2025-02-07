@@ -13,16 +13,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 
-import static org.springdoc.core.utils.Constants.API_DOCS_URL;
-import static org.springdoc.core.utils.Constants.DEFAULT_API_DOCS_URL_YAML;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.utils.Constants.SWAGGER_CONFIG_URL;
-import static org.springdoc.core.utils.Constants.SWAGGER_INITIALIZER_URL;
-import static org.springdoc.core.utils.Constants.SWAGGER_UI_PATH;
-import static org.springdoc.core.utils.Constants.SWAGGER_UI_URL;
 
 @Configuration
 @ConditionalOnClass(OpenAPI.class)
@@ -53,19 +45,6 @@ public class OpenApiConfiguration {
                                 )
                         )
                 );
-    }
-
-    @Bean
-    WebSecurityCustomizer openApiWebSecurityCustomizer(
-            @Value(API_DOCS_URL) String apiDocsUrl,
-            @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsYaml,
-            @Value(SWAGGER_CONFIG_URL) String swaggerConfigUrl,
-            @Value(SWAGGER_UI_URL) String swaggerUiUrl,
-            @Value(SWAGGER_UI_PATH) String swaggerUiPath,
-            @Value(SWAGGER_INITIALIZER_URL) String initializerUrl
-    ) {
-        return web -> web.ignoring().requestMatchers(HttpMethod.GET, apiDocsUrl, apiDocsYaml, swaggerConfigUrl,
-                swaggerUiPath, swaggerUiUrl, initializerUrl, "/swagger-ui/**");
     }
 
 }
